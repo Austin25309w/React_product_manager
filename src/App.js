@@ -4,9 +4,9 @@ import './App.css';
 
 import 'react-router';
 import {
-    BrowserRouter as Router,
-    Route,
-    Link
+  BrowserRouter as Router,
+  Route,
+  Link
 } from 'react-router-dom'
 
 
@@ -14,17 +14,17 @@ const Home = () => {
   return (
     <div>
       <h2>Home</h2>
-      </div>
+    </div>
   )
 }
 
 
 
 class AddProduct extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      
+
 
     }
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -33,37 +33,37 @@ class AddProduct extends Component {
 
   }
 
-  handleNameChange(e){
+  handleNameChange(e) {
     this.setState({
       productName: e.target.value
     })
   }
-  handlePriceChange(e){
+  handlePriceChange(e) {
     this.setState({
-        productPrice: e.target.value
+      productPrice: e.target.value
     })
     console.log('handlePriceChange' + this.state.value)
-}
-handleSubmit(e){
+  }
+  handleSubmit(e) {
     e.preventDefault();
     console.log(this.props)
     this.props.addProduct(this.state.productName, this.state.productPrice);
     this.handleClear()
-}
+  }
 
-handleClear(){
+  handleClear() {
     const productName = '';
     const productPrice = '';
-    this.setState ({ productName });
-    this.setState ({ productPrice });
+    this.setState({ productName });
+    this.setState({ productPrice });
 
-}
-  render(){
-    return(
-      <form onSubmit = {this.handleSubmit}>
-      <input type='text' placeholder='product name' name='productName' value={this.state.productName} onChange= {this.handleNameChange}/>
-      <input type='number' placeholder='product price' name='productPrice' value={this.state.productPrice} onChange= {this.handlePriceChange}/>
-      <input type = 'submit'/>
+  }
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input type='text' placeholder='product name' name='productName' value={this.state.productName} onChange={this.handleNameChange} />
+        <input type='number' placeholder='product price' name='productPrice' value={this.state.productPrice} onChange={this.handlePriceChange} />
+        <input type='submit' />
       </form>
     )
   }
@@ -99,7 +99,7 @@ handleClear(){
 //-----------------------------------------------------------
 
 class EditForm extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       name: props.name,
@@ -112,50 +112,50 @@ class EditForm extends Component {
     this.handlePriceChange = this.handlePriceChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
- 
 
-    handleNameChange(event){
-      this.setState({
-        name: event.target.value
-      })
-      console.log('handlenamechange' + event.target.name)
-    }
 
-    handlePriceChange(e){
-      this.setState({
-        price: e.target.value
-      })
+  handleNameChange(event) {
+    this.setState({
+      name: event.target.value
+    })
+    console.log('handlenamechange' + event.target.name)
+  }
 
-    }
+  handlePriceChange(e) {
+    this.setState({
+      price: e.target.value
+    })
 
-    handleSubmit(e){
-      e.preventDefault()
-      this.props.editProduct(this.state.id, this.state.name, this.state.price)
-      console.log('in handle submit', this.state.id, this.state.name, this.state.price)
-      this.props.changeEditable()
-    }
+  }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    this.props.editProduct(this.state.id, this.state.name, this.state.price)
+    console.log('in handle submit', this.state.id, this.state.name, this.state.price)
+    this.props.changeEditable()
+  }
   render() {
     return (
       <div>
-        
-        <form onSubmit = {this.handleSubmit}>
-        <label> Edit To do
-          <input type='text' value ={this.state.name} onChange={this.handleNameChange}/>
-          <input type='number' value ={this.state.price} onChange ={this.handlePriceChange}/> 
+
+        <form onSubmit={this.handleSubmit}>
+          <label> Edit To do
+          <input type='text' value={this.state.name} onChange={this.handleNameChange} />
+            <input type='number' value={this.state.price} onChange={this.handlePriceChange} />
           </label>
           <input type='submit' value='save' />
         </form>
-        </div>
+      </div>
     )
   }
 }
 
 //-----------------------------------------------------------
 class ProductDetails extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      editable: false, 
+      editable: false,
       products: props.products
     }
     this.changeEditable = this.changeEditable.bind(this);
@@ -168,27 +168,25 @@ class ProductDetails extends Component {
   }
 
 
-  render(){
-    console.log(this.props.match)
-    return (
-        this.props.products.map( (product, index) => {
-      <div>
-        { 
-          this.state.editable ?
-          <EditForm name= {this.props.product.name} price={this.props.product.price} id={this.props.product.id} editProduct={this.props.editProduct} changeEditable={this.changeEditable} />
-          
-          :       
-          
-          <li key = {this.props.index}>
-          {this.props.product.id}. {this.props.product.name} | {'$ ' + this.props.product.price }{' | '}
-          <button onClick={ () => { this.setState({ editable: true })  }}>Edit</button> {' | '}
-          <button onClick={ () => {this.props.deleteProduct(this.props.product.id) }}>Delete</button>
-          </li> 
-        }
-    
-    </div>
-  )
-})
+  render() {
+    return this.props.products.map((product, index) => {
+      return (
+        <div key={index}>
+          {
+            this.state.editable ?
+              <EditForm name={product.name} price={product.price} id={product.id} editProduct={this.props.editProduct} changeEditable={this.changeEditable} />
+
+              :
+
+              <li key={this.props.index}>
+                {product.id}. {product.name} | {'$ ' + product.price}{' | '}
+                <button onClick={() => { this.setState({ editable: true }) }}>Edit</button> {' | '}
+                <button onClick={() => { this.props.deleteProduct(this.props.product.id) }}>Delete</button>
+              </li>
+          }
+        </div>
+      )
+    })
   }
 }
 
@@ -196,13 +194,13 @@ class ProductDetails extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       products: [
-        {id:1, name:'Macbook', price:'1000'},
-        {id:2, name:'iPhone', price:'800'},
-        {id:3, name:'iPad', price:'500'},
+        { id: 1, name: 'Macbook', price: '1000' },
+        { id: 2, name: 'iPhone', price: '800' },
+        { id: 3, name: 'iPad', price: '500' },
       ]
-      
+
     }
     this.addProduct = this.addProduct.bind(this);
     this.deleteProduct = this.deleteProduct.bind(this);
@@ -210,72 +208,83 @@ class App extends Component {
   }
 
   addProduct(name, price) {
-    const id = this.state.products[this.state.products.length-1].id+1;
+    const id = this.state.products[this.state.products.length - 1].id + 1;
     this.setState({
-      products: [...this.state.products, {id:id, name: name, price:price} ]
+      products: [...this.state.products, { id: id, name: name, price: price }]
     })
   }
 
-  
+
 
   editProduct(productId, newName, newPrice) {
     let newProducts = this.state.products; // create copy of the array
-      newProducts.map( (product) => {  
-      if(product.id === productId){
-        product['name'] = newName;
-        product['price'] = newPrice;
+
+    for (var idx = 0; idx < newProducts.length; idx++) {
+
+      if (newProducts[idx].id === productId) {
+        newProducts[idx]['name'] = newName;
+        newProducts[idx]['price'] = newPrice;
         console.log('in edit product', newProducts)
+        return this.setState({
+          products: newProducts // set old product into new product
+        })
       }
-          this.setState({
-            products: newProducts // set old product into new product
-          })
-    })
+
+    }
+
   }
 
-  deleteProduct(productId){
+
+  deleteProduct(productId) {
     console.log(this.state.products)
-    this.state.products.map( (product, index) => {
-      if(product.id === productId){
-        this.state.products.splice(index, 1);
-          return this.setState({
-            products: this.state.products
-          })
+
+    for( var idx=0; idx<this.state.products.length; idx++){
+      if (this.state.products[idx].id === productId) {
+        this.state.products.splice(idx, 1);
+        return this.setState({
+          products: this.state.products
+        })
       }
-    })
+    }
+
   }
 
 
   render() {
     return (
       <Router>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <h1>Product Manager</h1>
-        <AddProduct 
-        addProduct = {this.addProduct}
-        />
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Welcome to React</h1>
+          </header>
+          <h1>Product Manager</h1>
+          <AddProduct
+            addProduct={this.addProduct}
+          />
 
-        {/* <ProductList 
+          {/* <ProductList 
         products = {this.state.products}
         editProduct = {this.editProduct}
         deleteProduct = {this.deleteProduct}
         />   */}
-      
-      <Link to ="/">Home</Link><span> | </span>
-      <Link to ="/list">Product List</Link><span> | </span>
-      <Link to ="/create">Product Creation</Link>
-      
-      <hr/> 
-      
-      <Route exact path='/' component={ Home}/>
-      <Route path='/list' component={ ProductDetails }/>
-      <Route path='/create' component={ AddProduct }/>
-       
-      </div>
-        </Router>
+
+          <Link to="/">Home</Link><span> | </span>
+          <Link to="/list">Product List</Link><span> | </span>
+          <Link to="/create">Product Creation</Link>
+
+          <hr />
+
+          <Route exact path='/' component={Home} />
+
+          <Route path='/list' render={ (props)=> ( 
+            <ProductDetails products={this.state.products} /> 
+           )}/>
+
+          <Route path='/create' component={AddProduct} />
+
+        </div>
+      </Router>
     );
   }
 }
